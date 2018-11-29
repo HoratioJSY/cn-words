@@ -1,6 +1,4 @@
-# cn-words
-### Get Similar Chinese Words and Sentences
-
+## Get Similar Chinese Words and Sentences
 
 
 Requirements:
