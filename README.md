@@ -20,12 +20,9 @@ Usage:
 
 ```bash
 git clone https://github.com/HoratioJSY/cn-words.git
+cd cn-words
+python inference.py --word 机器学习
 ```
-
-
-
-
-
 
 
 ### For examples
@@ -59,7 +56,6 @@ Inference time: 0.7596039772033691
 ```
 
 
-
 - Get the similarity of two words
 
 Base on word Vector to get Cosine similarity:
@@ -79,7 +75,6 @@ Inference time: 0.0002460479736328125
 ```
 
 
-
 - Words analogies
 
 
@@ -93,7 +88,6 @@ Inference time: 0.7463030815124512
 摩托车 - 单车 is close to: 摩托车、汽车、轿车、客车、拖拉机、摩托、机动车、零部件、农用、三轮、卡车、变速器、电视机、跑车、小轿车、柴油、奥迪、汽油
 Inference time: 0.7612090110778809
 ```
-
 
 
 - Adding New Words
