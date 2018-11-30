@@ -1,6 +1,5 @@
 ## Get Similar Chinese Words and Sentences
 
-
 Requirements:
 
 -  Python >= 3.5
@@ -12,8 +11,6 @@ To do List:
 - [ ] Reimplementation GloVe Model
 - [ ] Chinese Sentence 
 
-
-
 Usage:
 
 ```bash
@@ -22,10 +19,7 @@ cd cn-words
 python inference.py --word 机器学习
 ```
 
-
 ### For examples
-
-
 
 - Get the similar words
 
@@ -36,8 +30,6 @@ Set Flag 「word」to chose target and search similar words:
 机器学习 is close to: 模式识别、数据挖掘、深度学习、图形学、人工智能、神经网络、信号处理、运筹学、信息论、地理信息系统、数字图像处理、微分方程、面向对象、并行计算、概率论、故障诊断、生物信息学、数理统计
 Inference time: 0.7688698768615723
 ```
-
-
 
 ```bash
 >>> python inference.py --word 谢霆锋                                                                                
@@ -52,7 +44,6 @@ Set Flag 「top_k」to chose the numbers of nearest words:
 聚精会神 is close to: 全神贯注、专心致志、凝神、扎扎实实、一心一意、认认真真、伟大旗帜、认真、真抓实干、专心、解放思想、集中精力
 Inference time: 0.7596039772033691
 ```
-
 
 - Get the similarity of two words
 
@@ -72,9 +63,7 @@ Similarity is:  0.2337646484375
 Inference time: 0.0002460479736328125
 ```
 
-
 - Words analogies
-
 
 
 ```bash
@@ -87,9 +76,7 @@ Inference time: 0.7463030815124512
 Inference time: 0.7612090110778809
 ```
 
-
 - Adding New Words
-
 
 
 There is a simple  and intuitive way to add new word to vocabulary. If flag 「add_vocabulary」is missing,  output the testing results:
@@ -100,7 +87,7 @@ There is a simple  and intuitive way to add new word to vocabulary. If flag 「a
 
 ```
 
-If flag 「add_vocabulary」 is True, a new word vector is generated, and it will add to vocabulary:
+If flag 「add_vocabulary」 is True, a new word vector is generated, and it will be added to vocabulary:
 
 ```bash
 >>> python3 inference.py --add_word '残差网络=0.3*卷积神经网络+0.3*残差+0.4*图像识别' --add_vocabulary True
