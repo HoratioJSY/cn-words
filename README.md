@@ -8,7 +8,7 @@ Requirements:
 To do List:
 
 - [x] Chinese Words
-- [ ] Reimplementation GloVe Model
+- [x] Reimplementation GloVe Model
 - [ ] Chinese Sentence 
 
 Usage:
@@ -18,6 +18,12 @@ git clone https://github.com/HoratioJSY/cn-words.git
 cd cn-words
 python inference.py --word 机器学习
 ```
+
+If you want train  a simplify model that use a part of Chinese corpus, you could see [sample-training](https://github.com/HoratioJSY/cn-words/tree/master/sample-training) , or test in Colab:
+
+- [SkipGram with negative sampling](https://colab.research.google.com/drive/11qGq-rqv-tnvATUmcGhH0rqMSBqCWVxz)
+- [GloVe](https://colab.research.google.com/drive/1uFnqsHyIn5C84pVkYW_dpoGB9NG7eFme)
+
 
 ### For examples
 
