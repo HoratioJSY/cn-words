@@ -81,6 +81,12 @@ Inference time: 0.7463030815124512
 摩托车 - 单车 is close to: 摩托车、汽车、轿车、客车、拖拉机、摩托、机动车、零部件、农用、三轮、卡车、变速器、电视机、跑车、小轿车、柴油、奥迪、汽油
 Inference time: 0.7612090110778809
 ```
+If you want to do some Words analogies, such as "冬天-夏天=寒冷-炎热"，you should change the equation as "冬天-夏天+炎热=寒冷":
+
+```bash
+>>> python inference.py --word 冬季-夏季+炎热 --top_k 12
+冬季-夏季+炎热 is close to: 寒冷、严寒、酷暑、多雨、酷热、冬季、少雨、季风气候、凉爽、湿润气候、气温、平均气温
+```
 
 - Adding New Words
 
