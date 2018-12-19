@@ -54,21 +54,30 @@ class Inference:
                      np.matmul(word_embd[0, :], np.transpose(word_embd[0, :]))
         print('Similarity is: ', float(similarity))
 
-    def get_trends(self, second_word, method):
+    def get_trends(self, word_list, method):
         close_word = []
-        index = (w_dict[self.word], w_dict[second_word])
+        plus = re.compile(r'\+')
+        minus = re.compile(r'\-')
+        index = [w_dict[word] for word in word_list]
 
-        if method == '-':
+        if plus.search(args.word) and minus.search(args.word):
+            word_embed = embed[index[0], :]
+            calculate_list = re.split(r'[\u4e00-\u9fa5]{2,}', args.word)
+            for i in range(len(calculate_list[1:-1])):
+                if calculate_list[1+i] == '+': word_embed = (word_embed + embed[index[1+i], :])/2
+                else: word_embed = (word_embed - embed[index[1+i], :])/2
+            word_embed = np.reshape(word_embed, [1, 300])
+        elif method == '-':
             word_embed = (np.reshape(embed[index[0], :] - embed[index[1], :], [1, 300]))/2
         else:
             word_embed = (np.reshape(embed[index[0], :] + embed[index[1], :], [1, 300]))/2
 
         similarity = np.matmul(embed, np.transpose(word_embed))
         assert np.shape(similarity) == (len(w_dict), 1)
-        nearst = (-similarity).argsort(axis=0)[0:self.top_k ]
+        nearst = (-similarity).argsort(axis=0)[1:self.top_k+1]
         for k in range(self.top_k):
             close_word.append(reverse_w_dict[nearst[k, 0]])
-        print('%s %s %s is close to: %s' % (self.word, method, second_word, '、'.join(close_word)))
+        print('%s is close to: %s' % (args.word, '、'.join(close_word)))
 
 
 def add_word(expression, add_vocabulary):
@@ -113,16 +122,17 @@ def main():
     else:
         word_list = re.split(r'\-|\/|\+', args.word.rstrip())
         search_obj = re.search(r'\-|\/|\+', args.word)
+        contain_words = [word for word in word_list if w_dict.__contains__(word)]
         start = time.time()
         if search_obj is None:
             if w_dict.__contains__(args.word):
                 Inference(args.word, args.top_k).get_similar_words()
             else: print('%s is not in vocabulary!' % args.word)
-        elif w_dict.__contains__(word_list[0]) and w_dict.__contains__(word_list[-1]):
+        elif len(contain_words) == len(word_list):
             if search_obj.group() == '/':
                 Inference(word_list[0], args.top_k).get_similarity(word_list[-1])
             else:
-                Inference(word_list[0], args.top_k).get_trends(word_list[-1], search_obj.group())
+                Inference(word_list[0], args.top_k).get_trends(word_list, search_obj.group())
         else:
             print('%s or %s is not in vocabulary!'%(word_list[0], word_list[-1]))
         print('Inference time:', time.time() - start)
