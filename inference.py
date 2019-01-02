@@ -38,27 +38,27 @@ class Inference:
 
     def get_similar_words(self):
         close_word = []
-        index = w_dict[self.word]
+        index = w_dict[self.word[0]]
         word_embed = np.reshape(embed[index, :], [1, 300])
         similarity = np.matmul(embed, np.transpose(word_embed))
         assert np.shape(similarity) == (len(w_dict), 1)
         nearst = (-similarity).argsort(axis=0)[1:self.top_k + 1]
         for k in range(self.top_k):
             close_word.append(reverse_w_dict[nearst[k, 0]])
-        print('%s is close to: %s' % (self.word, '、'.join(close_word)))
+        print('%s is close to: %s' % (self.word[0], '、'.join(close_word)))
 
-    def get_similarity(self, second_word):
-        index = (w_dict[self.word], w_dict[second_word])
+    def get_similarity(self):
+        index = (w_dict[self.word[0]], w_dict[self.word[-1]])
         word_embd = np.reshape(embed[[index[0], index[1]], :], [2, 300])
         similarity = np.matmul(word_embd[1, :], np.transpose(word_embd[0, :]))/\
                      np.matmul(word_embd[0, :], np.transpose(word_embd[0, :]))
         print('Similarity is: ', float(similarity))
 
-    def get_trends(self, word_list, method):
+    def get_trends(self, method):
         close_word = []
         plus = re.compile(r'\+')
         minus = re.compile(r'\-')
-        index = [w_dict[word] for word in word_list]
+        index = [w_dict[word] for word in self.word]
 
         if plus.search(args.word) and minus.search(args.word):
             word_embed = embed[index[0], :]
@@ -106,7 +106,7 @@ def add_word(expression, add_vocabulary):
     for i in range(len(num_list)):
         new_embed += num_list[i] * w_list[i]
     w_dict[exp_list[0]] = len(w_dict)
-    embed = np.vstack((embed, new_embed))
+    embed = np.vstack((embed, new_embed/len(num_list)))
     reverse_w_dict = dict(zip(w_dict.values(), w_dict.keys()))
     Inference(exp_list[0]).get_similar_words()
 
@@ -115,7 +115,6 @@ def add_word(expression, add_vocabulary):
             pickle.dump((embed, w_dict), f)
         print('Successfully update vocabulary: %s' % exp_list[0])
 
-
 def main():
     if args.add_word:
         add_word(args.add_word, args.add_vocabulary)
@@ -123,16 +122,18 @@ def main():
         word_list = re.split(r'\-|\/|\+', args.word.rstrip())
         search_obj = re.search(r'\-|\/|\+', args.word)
         contain_words = [word for word in word_list if w_dict.__contains__(word)]
+        inference_machine = Inference(word_list, args.top_k)
+
         start = time.time()
         if search_obj is None:
             if w_dict.__contains__(args.word):
-                Inference(args.word, args.top_k).get_similar_words()
+                inference_machine.get_similar_words()
             else: print('%s is not in vocabulary!' % args.word)
         elif len(contain_words) == len(word_list):
             if search_obj.group() == '/':
-                Inference(word_list[0], args.top_k).get_similarity(word_list[-1])
+                inference_machine.get_similarity()
             else:
-                Inference(word_list[0], args.top_k).get_trends(word_list, search_obj.group())
+                inference_machine.get_trends(search_obj.group())
         else:
             print('%s or %s is not in vocabulary!'%(word_list[0], word_list[-1]))
         print('Inference time:', time.time() - start)
