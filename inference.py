@@ -108,7 +108,7 @@ def add_word(expression, add_vocabulary):
     w_dict[exp_list[0]] = len(w_dict)
     embed = np.vstack((embed, new_embed/len(num_list)))
     reverse_w_dict = dict(zip(w_dict.values(), w_dict.keys()))
-    Inference(exp_list[0]).get_similar_words()
+    Inference(exp_list).get_similar_words()
 
     if add_vocabulary:
         with open(args.path, 'wb') as f:
