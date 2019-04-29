@@ -6,7 +6,7 @@ import time
 import argparse
 import re
 import os
-import urllib
+import urllib.request
 import numpy as np
 
 parser = argparse.ArgumentParser(description='Inference the similar words')
@@ -21,7 +21,7 @@ args = parser.parse_args()
 def get_file(path):
     if not os.path.exists(path):
         print('Downloading(~300MB)...')
-        filepath, _ = urllib.urlretrieve('https://horatio-jsy-1258160473.cos.ap-beijing.myqcloud.com/vec_saved.p', filename=path)
+        filepath, _ = urllib.request.urlretrieve('https://horatio-jsy-1258160473.cos.ap-beijing.myqcloud.com/vec_saved.p', filename=path)
         print('Downloded')
     with open(path, 'rb') as f:
         embed, w_dict = pickle.load(f)
